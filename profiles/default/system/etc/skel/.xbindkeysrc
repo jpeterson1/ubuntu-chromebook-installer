@@ -14,3 +14,9 @@ F6
 F7
 "xdotool keyup shift+BackSpace; xdotool key Delete; xdotool keydown shift"
 shift+BackSpace
+"xdotool keyup F8; pactl set-sink-mute alsa_output.pci-0000_00_1b.0.analog-stereo toggle"
+F8
+"xdotool keyup F9; pactl set-sink-volume alsa_output.pci-0000_00_1b.0.analog-stereo -- -10%"
+F9
+"xdotool keyup F10; pactl set-sink-volume alsa_output.pci-0000_00_1b.0.analog-stereo -- +10%"
+F10
