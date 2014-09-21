@@ -7,6 +7,7 @@ case "${1}" in
 		# Unbind snd_hda_intel for sound
 		echo -n "0000:00:1b.0" | tee /sys/bus/pci/drivers/snd_hda_intel/unbind
 		echo -n "0000:00:03.0" | tee /sys/bus/pci/drivers/snd_hda_intel/unbind
+		sleep 5
 	;;
 	resume|thaw)
 		# Bind ehci for preventing error
@@ -14,6 +15,7 @@ case "${1}" in
 		# Bind snd_hda_intel for sound
 		echo -n "0000:00:1b.0" | tee /sys/bus/pci/drivers/snd_hda_intel/bind
 		echo -n "0000:00:03.0" | tee /sys/bus/pci/drivers/snd_hda_intel/bind
+		sleep 5
 	;;
 
 esac
