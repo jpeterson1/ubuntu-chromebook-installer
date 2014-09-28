@@ -2,11 +2,17 @@
 
 case "${1}" in
 	hibernate|suspend)
+		# Pause sound system
+		alsa suspend all
+
 		# Unbind ehci for preventing error
 		echo -n "0000:00:1d.0" | tee /sys/bus/pci/drivers/ehci-pci/unbind
 		# Unbind snd_hda_intel for sound
 		echo -n "0000:00:1b.0" | tee /sys/bus/pci/drivers/snd_hda_intel/unbind
 		echo -n "0000:00:03.0" | tee /sys/bus/pci/drivers/snd_hda_intel/unbind
+
+		# Do not inhibit sleep if the above commands return non-zero exit codes.
+		exit 0
 	;;
 	resume|thaw)
 		# Unbind ehci for preventing error
@@ -14,11 +20,11 @@ case "${1}" in
 		# Bind snd_hda_intel for sound
 		echo -n "0000:00:1b.0" | tee /sys/bus/pci/drivers/snd_hda_intel/bind
 		echo -n "0000:00:03.0" | tee /sys/bus/pci/drivers/snd_hda_intel/bind
-		
-		# Shutdown pulseaudio so that we can restart alsa. It will
-		# automatically start again. Then let alsa know that we have
-		# re-enabled these devices
-		killall pulseaudio && alsa force-reload
+
+		# Resume sound system
+		alsa resume
+		# Restart pulseaudio
+		killall pulseaudio
 	;;
 
 esac
